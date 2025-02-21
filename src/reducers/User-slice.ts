@@ -1,25 +1,19 @@
-import axios, {AxiosError} from "axios";
+import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import User from "../model/User.ts";
+import api, {ACCESS_EXPIRES_DAYS, ACCESS_TOKEN_KEY, REFRESH_EXPIRES_DAYS, REFRESH_TOKEN_KEY} from "../api/api.ts";
+import CookieService from "../util/cookie-service.ts";
 
 const initialState = {
-    jwt_token: null,
-    refresh_token : null,
-    username: null,
     isAuthenticated: false,
-    loading: false,
     error: '',
 }
 
-const api = axios.create({
-    baseURL : 'http://localhost:3000'
-})
-
 export const registerUser = createAsyncThunk(
-    "user/registration",
-    async (user: User, { rejectWithValue }) => {
+    "user/ui",
+    async (user: User, {rejectWithValue}) => {
         try {
-            const response = await api.post('/api/auth/register', user);
+            const response = await api.post('/auth/register', user);
             return response.data;
         } catch (err) {
             const error = err as AxiosError;
@@ -33,9 +27,9 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
     "user/login",
-    async (user: User, { rejectWithValue }) => {
+    async (user: User, {rejectWithValue}) => {
         try {
-            const response = await api.post('/api/auth/login', user);
+            const response = await api.post('/auth/login', user);
             return response.data;
         } catch (err) {
             const error = err as AxiosError;
@@ -47,31 +41,39 @@ export const loginUser = createAsyncThunk(
     }
 )
 
-const refreshToken = createAsyncThunk(
+export const refreshToken = createAsyncThunk(
     "user/refreshToken",
     async () => {
+        const refreshToken = CookieService.getCookie(REFRESH_TOKEN_KEY);
+
         try {
-            const response = await api.post('/api/auth/refreshToken');
+            console.log('Refresh token', refreshToken)
+            const response = await api.post('/auth/refresh-token', null, {
+                headers: {
+                    Authorization: `Bearer ${refreshToken}`
+                }
+            });
             return response.data;
         } catch (err) {
             const error = err as AxiosError;
             console.log(error);
         }
     }
-)
+);
 
 export const userSlice = createSlice({
     name: "userReducer",
     initialState,
-    reducers:{
+    reducers: {
         logOUtUser(state) {
             state.isAuthenticated = false;
+            CookieService.deleteCookie(ACCESS_TOKEN_KEY);
+            CookieService.deleteCookie(REFRESH_TOKEN_KEY);
         }
     },
     extraReducers(builder) {
         builder
-            .addCase(registerUser.fulfilled, (state, action) => {
-                console.log('User Registered Successfully');
+            .addCase(registerUser.fulfilled, (state) => {
                 state.error = '';
             })
             .addCase(registerUser.rejected, (state, action) => {
@@ -79,8 +81,8 @@ export const userSlice = createSlice({
                 state.error = action.payload as string;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.jwt_token = action.payload.accessToken;
-                state.refresh_token = action.payload.refreshToken;
+                CookieService.setCookie(ACCESS_TOKEN_KEY, action.payload.accessToken, ACCESS_EXPIRES_DAYS);
+                CookieService.setCookie(REFRESH_TOKEN_KEY, action.payload.refreshToken, REFRESH_EXPIRES_DAYS);
                 state.isAuthenticated = true;
                 state.error = '';
             })
@@ -89,7 +91,7 @@ export const userSlice = createSlice({
                 state.error = action.payload as string;
             })
             .addCase(refreshToken.fulfilled, (state, action) => {
-                state.jwt_token = action.payload.accessToken;
+                CookieService.setCookie(ACCESS_TOKEN_KEY, action.payload.accessToken, ACCESS_EXPIRES_DAYS);
             })
     }
 })

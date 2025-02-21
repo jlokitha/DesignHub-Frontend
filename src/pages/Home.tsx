@@ -1,5 +1,5 @@
 import React from "react";
-import {Button} from "../components/registration/Button.tsx";
+import {Button} from "../components/ui/Button.tsx";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../store/store.ts";
 import {logOUtUser} from "../reducers/User-slice.ts";
