@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Code} from 'lucide-react';
-import {Input} from "../components/registration/Input.tsx";
-import {Button} from "../components/registration/Button.tsx";
+import {Input} from "../components/ui/Input.tsx";
+import {Button} from "../components/ui/Button.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../store/store.ts";
 import {registerUser} from "../reducers/User-slice.ts";
 
 export const Register: React.FC = () => {
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -38,6 +39,7 @@ export const Register: React.FC = () => {
 
         try {
             dispatch(registerUser({
+                username,
                 email,
                 password
             }))
@@ -76,6 +78,14 @@ export const Register: React.FC = () => {
                                 <p className="text-sm text-red-700">{error}</p>
                             </div>
                         )}
+
+                        <Input
+                            label="Username"
+                            type="text"
+                            required
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
 
                         <Input
                             label="Email address"

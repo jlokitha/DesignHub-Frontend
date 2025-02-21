@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import { Code } from 'lucide-react';
-import {Input} from "../components/registration/Input.tsx";
-import {Button} from "../components/registration/Button.tsx";
+import {Input} from "../components/ui/Input.tsx";
+import {Button} from "../components/ui/Button.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../store/store.ts";
 import {loginUser} from "../reducers/User-slice.ts";
