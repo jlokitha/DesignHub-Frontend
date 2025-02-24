@@ -91,7 +91,7 @@ export const Login: React.FC = () => {
 
             <Button
               type="submit"
-              className="w-full"
+              className="w-full rounded-sm"
               isLoading={isLoading}
             >
               Sign in

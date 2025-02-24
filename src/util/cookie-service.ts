@@ -1,4 +1,9 @@
 class CookieService {
+    static ACCESS_TOKEN_KEY = 'accessToken';
+    static REFRESH_TOKEN_KEY = 'refreshToken';
+    static REFRESH_EXPIRES_DAYS = 7;
+    static ACCESS_EXPIRES_DAYS = 2 / (24 * 60);
+
     /**
      * Sets a cookie with a given name, value, and expiration (in days)
      */

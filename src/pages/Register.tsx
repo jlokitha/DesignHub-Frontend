@@ -113,7 +113,7 @@ export const Register: React.FC = () => {
 
                         <Button
                             type="submit"
-                            className="w-full"
+                            className="w-full rounded-sm"
                             isLoading={isLoading}
                         >
                             Create account
