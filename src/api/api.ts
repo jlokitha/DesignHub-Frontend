@@ -1,11 +1,6 @@
 import axios from "axios";
 import CookieService from "../util/cookie-service.ts";
 
-export const ACCESS_TOKEN_KEY = 'accessToken';
-export const REFRESH_TOKEN_KEY = 'refreshToken';
-export const REFRESH_EXPIRES_DAYS = 7;
-export const ACCESS_EXPIRES_DAYS = 1;
-
 const api = axios.create({
     baseURL: "http://localhost:3000/api/v1",
     withCredentials: true,
@@ -17,10 +12,8 @@ export const setupAxiosInterceptors = (
     // Request interceptor
     api.interceptors.request.use(
         (config) => {
-            // Skip auth header for login/refresh endpoints
-            console.log('Adding token to request', config.headers.Authorization);
-            if (!config.url?.startsWith('/api/v1/auth')) {
-                const token = CookieService.getCookie(ACCESS_TOKEN_KEY);
+            if (!config.url?.startsWith('/auth')) {
+                const token = CookieService.getCookie(CookieService.ACCESS_TOKEN_KEY);
                 if (token) {
                     config.headers = config.headers || {};
                     config.headers.Authorization = `Bearer ${token}`;

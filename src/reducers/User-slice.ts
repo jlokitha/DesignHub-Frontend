@@ -1,8 +1,8 @@
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import User from "../model/User.ts";
-import api, {ACCESS_EXPIRES_DAYS, ACCESS_TOKEN_KEY, REFRESH_EXPIRES_DAYS, REFRESH_TOKEN_KEY} from "../api/api.ts";
 import CookieService from "../util/cookie-service.ts";
+import api from "../api/api.ts";
 
 const initialState = {
     isAuthenticated: false,
@@ -44,7 +44,7 @@ export const loginUser = createAsyncThunk(
 export const refreshToken = createAsyncThunk(
     "user/refreshToken",
     async () => {
-        const refreshToken = CookieService.getCookie(REFRESH_TOKEN_KEY);
+        const refreshToken = CookieService.getCookie(CookieService.REFRESH_TOKEN_KEY);
 
         try {
             console.log('Refresh token', refreshToken)
@@ -67,8 +67,8 @@ export const userSlice = createSlice({
     reducers: {
         logOUtUser(state) {
             state.isAuthenticated = false;
-            CookieService.deleteCookie(ACCESS_TOKEN_KEY);
-            CookieService.deleteCookie(REFRESH_TOKEN_KEY);
+            CookieService.deleteCookie(CookieService.ACCESS_TOKEN_KEY);
+            CookieService.deleteCookie(CookieService.REFRESH_TOKEN_KEY);
         }
     },
     extraReducers(builder) {
@@ -81,8 +81,8 @@ export const userSlice = createSlice({
                 state.error = action.payload as string;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                CookieService.setCookie(ACCESS_TOKEN_KEY, action.payload.accessToken, ACCESS_EXPIRES_DAYS);
-                CookieService.setCookie(REFRESH_TOKEN_KEY, action.payload.refreshToken, REFRESH_EXPIRES_DAYS);
+                CookieService.setCookie(CookieService.ACCESS_TOKEN_KEY, action.payload.accessToken, CookieService.ACCESS_EXPIRES_DAYS);
+                CookieService.setCookie(CookieService.REFRESH_TOKEN_KEY, action.payload.refreshToken, CookieService.REFRESH_EXPIRES_DAYS);
                 state.isAuthenticated = true;
                 state.error = '';
             })
@@ -91,7 +91,7 @@ export const userSlice = createSlice({
                 state.error = action.payload as string;
             })
             .addCase(refreshToken.fulfilled, (state, action) => {
-                CookieService.setCookie(ACCESS_TOKEN_KEY, action.payload.accessToken, ACCESS_EXPIRES_DAYS);
+                CookieService.setCookie(CookieService.ACCESS_TOKEN_KEY, action.payload.accessToken, CookieService.ACCESS_EXPIRES_DAYS);
             })
     }
 })
