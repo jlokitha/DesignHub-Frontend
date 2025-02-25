@@ -6,7 +6,7 @@ const initialState: Component[] = [];
 
 export const saveComponent = createAsyncThunk(
     "component/save",
-    async (component: Component) => {
+    async (component: FormData) => {
         try {
             const response = await api.post('/component/', component);
             return response.data;

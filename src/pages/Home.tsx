@@ -12,6 +12,8 @@ import {findAllTags} from "../reducers/Tag-slice.ts";
 import {Logo} from "../components/ui/Logo.tsx";
 import {NoResults} from "../components/ui/NoResults.tsx";
 import {SearchField} from "../components/ui/SearchField.tsx";
+import {ComponentDetailModal} from "../components/ComponentDetailModal.tsx";
+import {ComponentSubmissionModal} from "../components/ComponentSubmissionModal.tsx";
 
 export const Home: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
@@ -46,6 +48,13 @@ export const Home: React.FC = () => {
 
         return matchesSearch && matchesTags;
     });
+
+    const handleTagClick = (tag: Tag) => {
+        if (!selectedTags.includes(tag)) {
+            setSelectedTags([...selectedTags, tag]);
+        }
+        setSelectedComponent(null);
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -102,6 +111,22 @@ export const Home: React.FC = () => {
 
                 {filteredComponents.length === 0 && (
                    <NoResults/>
+                )}
+
+                {/* Component Detail Modal */}
+                {selectedComponent && (
+                    <ComponentDetailModal
+                        component={selectedComponent}
+                        onClose={() => setSelectedComponent(null)}
+                        onTagClick={handleTagClick}
+                    />
+                )}
+
+                {/* Component Submission Modal */}
+                {showSubmissionModal && (
+                    <ComponentSubmissionModal
+                        onClose={() => setShowSubmissionModal(false)}
+                    />
                 )}
             </div>
         </div>

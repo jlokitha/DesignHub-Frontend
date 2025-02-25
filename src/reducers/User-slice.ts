@@ -69,6 +69,7 @@ export const userSlice = createSlice({
             state.isAuthenticated = false;
             CookieService.deleteCookie(CookieService.ACCESS_TOKEN_KEY);
             CookieService.deleteCookie(CookieService.REFRESH_TOKEN_KEY);
+            localStorage.removeItem('user');
         }
     },
     extraReducers(builder) {
@@ -84,6 +85,7 @@ export const userSlice = createSlice({
                 CookieService.setCookie(CookieService.ACCESS_TOKEN_KEY, action.payload.accessToken, CookieService.ACCESS_EXPIRES_DAYS);
                 CookieService.setCookie(CookieService.REFRESH_TOKEN_KEY, action.payload.refreshToken, CookieService.REFRESH_EXPIRES_DAYS);
                 state.isAuthenticated = true;
+                localStorage.setItem('user', JSON.stringify(action.payload.user));
                 state.error = '';
             })
             .addCase(loginUser.rejected, (state, action) => {
