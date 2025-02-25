@@ -7,6 +7,7 @@ import TagSuggestions from "./ui/TagSuggestion.tsx";
 import TagItem from "./ui/TagItem.tsx";
 
 interface TagSelectProps {
+    title?: string;
     placeholder: string;
     limit: number;
     selectedTags: Tag[];
@@ -56,7 +57,12 @@ export const TagSelect: React.FC<TagSelectProps> = (props) => {
     };
 
     return (
-        <div>
+        <div className="space-y-2">
+            {props.title && (
+                <label className="block text-sm font-medium text-gray-700">
+                    {props.title}
+                </label>
+            )}
             <div className="relative">
                 <div
                     className="min-h-[42px] p-2 flex flex-wrap gap-2 rounded-md border border-gray-300 bg-white focus-within:border-gray-700 focus-within:ring-1 focus-within:ring-gray-700">
