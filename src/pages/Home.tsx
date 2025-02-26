@@ -14,6 +14,7 @@ import {NoResults} from "../components/ui/NoResults.tsx";
 import {SearchField} from "../components/ui/SearchField.tsx";
 import {ComponentDetailModal} from "../components/ComponentDetailModal.tsx";
 import {ComponentSubmissionModal} from "../components/ComponentSubmissionModal.tsx";
+import {useNavigate} from "react-router-dom";
 
 export const Home: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
@@ -23,6 +24,7 @@ export const Home: React.FC = () => {
 
     const components = useSelector((state: RootState) => state.componentReducer);
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getComponents());
@@ -39,6 +41,8 @@ export const Home: React.FC = () => {
     };
 
     const filteredComponents = components.filter(component => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+
         const matchesSearch = searchQuery === '' ||
             component.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             component.description?.toLowerCase().includes(searchQuery.toLowerCase());
@@ -46,7 +50,9 @@ export const Home: React.FC = () => {
         const matchesTags = selectedTags.length === 0 ||
             selectedTags.every(tag => component.tags.some(componentTag => componentTag.id === tag.id));
 
-        return matchesSearch && matchesTags;
+        const userIdMatches = component.userId !== user.id;
+
+        return matchesSearch && matchesTags && userIdMatches;
     });
 
     const handleTagClick = (tag: Tag) => {
@@ -66,13 +72,14 @@ export const Home: React.FC = () => {
                         <div className="flex items-center space-x-4">
                             <Button
                                 onClick={handleSubmitComponent}
-                                className="flex items-center rounded-sm"
+                                className="flex items-center rounded-sm cursor-pointer"
                             >
                                 <Plus className="h-4 w-4 m-0"/>
                                 <span className="hidden sm:inline ml-2">Submit Component</span>
                             </Button>
-                            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center cursor-pointer">
-                                <User className="w-5 h-5 text-blue-600" />
+                            <div onClick={() => navigate('/profile')}
+                                 className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center cursor-pointer">
+                                <User className="w-5 h-5 text-blue-600"/>
                             </div>
                         </div>
                     </div>
@@ -110,7 +117,7 @@ export const Home: React.FC = () => {
                 </div>
 
                 {filteredComponents.length === 0 && (
-                   <NoResults/>
+                    <NoResults/>
                 )}
 
                 {/* Component Detail Modal */}

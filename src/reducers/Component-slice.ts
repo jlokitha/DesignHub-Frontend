@@ -16,6 +16,30 @@ export const saveComponent = createAsyncThunk(
     }
 )
 
+export const updateComponent = createAsyncThunk(
+    "component/update",
+    async (component: FormData) => {
+        try {
+            const response = await api.put(`/component/${component.get('id')}`, component);
+            return response.data;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+)
+
+export const deleteComponent = createAsyncThunk(
+    "component/delete",
+    async (id: number) => {
+        try {
+            await api.delete(`/component/${id}`);
+            return id;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+)
+
 export const getComponents = createAsyncThunk(
     "component/get",
     async () => {
@@ -36,6 +60,13 @@ const componentSlice = createSlice({
         builder
             .addCase(saveComponent.fulfilled, (state, action) => {
                 state.push(action.payload);
+            })
+            .addCase(updateComponent.fulfilled, (state, action) => {
+                const index = state.findIndex(component => component.id === action.payload.id);
+                state[index] = action.payload;
+            })
+            .addCase(deleteComponent.fulfilled, (state, action) => {
+                return state.filter(component => component.id !== action.payload);
             })
             .addCase(getComponents.fulfilled, (state, action) => {
                 return action.payload;

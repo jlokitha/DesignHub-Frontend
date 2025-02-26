@@ -3,6 +3,7 @@ import {createBrowserRouter, RouterProvider} from "react-router";
 import {Login} from "./pages/Login.tsx";
 import {Register} from "./pages/Register.tsx";
 import {Home} from "./pages/Home.tsx";
+import {Profile} from "./pages/Profile.tsx";
 
 function App() {
 
@@ -19,6 +20,10 @@ function App() {
             path: '/',
             element: <Home/>
         },
+        {
+            path: '/profile',
+            element: <Profile/>
+        }
     ])
     return (
         <>
