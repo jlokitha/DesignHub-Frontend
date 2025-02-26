@@ -1,19 +1,41 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Component from "../model/Component.ts";
+import UpdateButton from "./ui/UpdateButton.tsx";
+import DeleteButton from "./ui/DeleteButton.tsx";
 
 interface ComponentCardProps {
     component: Component;
     onClick: () => void;
+    onUpdate?: () => void;
+    onDelete?: () => void;
 }
 
-export const ComponentCard: React.FC<ComponentCardProps> = ({component, onClick}) => {
-    const imageUrl = component.image ? `${component.image}` : undefined;
+export const ComponentCard: React.FC<ComponentCardProps> = ({
+                                                                component,
+                                                                onClick,
+                                                                onUpdate,
+                                                                onDelete
+                                                            }) => {
+    const [imageUrl, setImageUrl] = useState<string | undefined>(component.image ? `${component.image}` : undefined);
+
+    useEffect(() => {
+        setImageUrl(component.image ? `${component.image}` : undefined);
+    }, [component.image]);
 
     return (
         <div
-            className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer overflow-hidden"
+            className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer overflow-hidden relative group"
             onClick={onClick}
         >
+            {/* Action buttons - only shown when methods are provided */}
+            {(onUpdate || onDelete) && (
+                <div
+                    className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                    {onUpdate && <UpdateButton onUpdate={onUpdate}/>}
+                    {onDelete && <DeleteButton onDelete={onDelete}/>}
+                </div>
+            )}
+
             <div className="relative w-full pt-[56.25%]">
                 {imageUrl && (
                     <img
