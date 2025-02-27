@@ -76,18 +76,18 @@ export const Profile: React.FC = () => {
                             </div>
                             <div className="flex-1">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-2 line-clamp-1">
                                         {user.username || 'User Name'}
                                     </h2>
                                 </div>
                                 <div className="space-y-2">
                                     <div className="flex items-center text-gray-600">
                                         <Mail className="w-4 h-4 mr-2 flex-shrink-0"/>
-                                        <span className="truncate">{user.email || 'email@example.com'}</span>
+                                        <h3 className="line-clamp-1">{user.email || 'email@example.com'}</h3>
                                     </div>
                                     <div className="flex items-center text-gray-600">
                                         <Calendar className="w-4 h-4 mr-2 flex-shrink-0"/>
-                                        <span>Joined {new Date(Date.now()).toLocaleDateString()}</span>
+                                        <h3 className="line-clamp-1">Joined {new Date(Date.now()).toLocaleDateString()}</h3>
                                     </div>
                                 </div>
                             </div>

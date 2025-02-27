@@ -20,7 +20,9 @@ export const ComponentCard: React.FC<ComponentCardProps> = ({
 
     useEffect(() => {
         setImageUrl(component.image ? `${component.image}` : undefined);
-    }, [component.image]);
+    }, [component]);
+
+    // const imageUrl = component.image ? `${component.image}` : undefined;
 
     return (
         <div
