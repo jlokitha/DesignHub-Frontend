@@ -6,6 +6,7 @@ import api from "../api/api.ts";
 
 const initialState = {
     isAuthenticated: false,
+    isRegistered: false,
     error: '',
 }
 
@@ -76,6 +77,7 @@ export const userSlice = createSlice({
         builder
             .addCase(registerUser.fulfilled, (state) => {
                 state.error = '';
+                state.isRegistered = true;
             })
             .addCase(registerUser.rejected, (state, action) => {
                 console.log('User Registration Failed', action.payload);

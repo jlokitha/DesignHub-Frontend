@@ -15,6 +15,7 @@ export const Register: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const isRegistered = useSelector((state: RootState) => state.userReducer.isRegistered);
     const dispatch = useDispatch<AppDispatch>();
     const navigation = useNavigate();
 
@@ -43,10 +44,8 @@ export const Register: React.FC = () => {
                 email,
                 password
             }))
-            navigation('/login');
-            console.log('Register:', {email, password});
+            isRegistered && navigation('/login');
         } catch (err) {
-            console.log(err);
             setError('Failed to create account');
         } finally {
             setIsLoading(false);
