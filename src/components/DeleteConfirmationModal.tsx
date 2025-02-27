@@ -1,5 +1,5 @@
 import React from 'react';
-import {AlertTriangle, X} from 'lucide-react';
+import {AlertTriangle} from 'lucide-react';
 import {Button} from './ui/Button.tsx';
 
 interface DeleteConfirmationModalProps {
@@ -33,13 +33,6 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
                             </div>
                             <h3 className="ml-3 text-lg font-medium leading-6 text-gray-900">Delete Component</h3>
                         </div>
-                        <button
-                            onClick={onClose}
-                            className="text-gray-400 hover:text-gray-500 transition-colors"
-                            disabled={isDeleting}
-                        >
-                            <X className="w-5 h-5"/>
-                        </button>
                     </div>
 
                     <div className="mt-2">

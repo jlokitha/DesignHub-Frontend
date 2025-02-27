@@ -109,12 +109,12 @@ export const ComponentSubmissionModal: React.FC<ComponentSubmissionModalProps> =
                         <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                             {isUpdate ? 'Update Component' : 'Submit Component'}
                         </h2>
-                        <button
+                        <Button
+                            variant="ghost"
                             onClick={onClose}
-                            className="text-gray-400 hover:text-gray-500 transition-colors"
-                        >
-                            <X className="h-6 w-6"/>
-                        </button>
+                            className="text-gray-400 hover:text-gray-500 transition-colors rounded-md"
+                            children={<X className="h-6 w-6"/>}
+                        />
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">

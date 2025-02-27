@@ -22,8 +22,6 @@ export const ComponentCard: React.FC<ComponentCardProps> = ({
         setImageUrl(component.image ? `${component.image}` : undefined);
     }, [component]);
 
-    // const imageUrl = component.image ? `${component.image}` : undefined;
-
     return (
         <div
             className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer overflow-hidden relative group"
