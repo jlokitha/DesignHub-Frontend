@@ -92,6 +92,13 @@ On the profile page, users can review their submitted components and log out sec
 
 ---
 
+## API Documentation
+
+Detailed API endpoint documentation is available via our Postman collection.  
+Access it [here](https://documenter.getpostman.com/view/35384124/2sAYdfqWRK).
+
+---
+
 ## Backend Repository
 
 Access the Backend repository on GitHub [here](https://github.com/jlokitha/DesignHub-Backend.git).
